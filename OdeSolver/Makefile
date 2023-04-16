@@ -6,8 +6,11 @@ AbstractOdeSolver.o: AbstractOdeSolver.cpp AbstractOdeSolver.hpp
 ForwardEulerSolver.o: ForwardEulerSolver.cpp ForwardEulerSolver.hpp	
 	g++ -c -O ForwardEulerSolver.cpp
 
-main.o: main.cpp AbstractOdeSolver.hpp ForwardEulerSolver.hpp
+RungeKutta4.o: RungeKutta4.cpp RungeKutta4.hpp
+	g++ -c -O RungeKutta4.cpp
+
+main.o: main.cpp AbstractOdeSolver.hpp ForwardEulerSolver.hpp RungeKutta4.hpp
 	g++ -c -O main.cpp
 
-main: main.o AbstractOdeSolver.o ForwardEulerSolver.o
-	g++ -O -o main main.o AbstractOdeSolver.o ForwardEulerSolver.o
+main: main.o AbstractOdeSolver.o ForwardEulerSolver.o RungeKutta4.o
+	g++ -O -o main main.o AbstractOdeSolver.o ForwardEulerSolver.o RungeKutta4.o
