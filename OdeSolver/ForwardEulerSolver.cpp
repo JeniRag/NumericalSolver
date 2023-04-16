@@ -1,7 +1,7 @@
 #include "ForwardEulerSolver.hpp"
 
 
-double ForwardEulerSolver::RightHandSide(double y, double t){
+double ForwardEulerSolver::RightHandSide(double t, double y){
     return 1+t;
 }
 
@@ -11,25 +11,23 @@ double ForwardEulerSolver::SolveEquation(){
     //t_i = T_0 + i * h
     // t_N = T_1 -> T_1 = T_0 + N * h <-> N = (T_1 -T_0)/h
 
-    int N = (int) ((finalTime - initialTime) / stepSize );
-    double y_prev = initialValue;
-    double t_prev = initialTime;
+    int N = (int) ((finalTime - initialTime) / stepSize ); //number of steps
+    double y_i = initialValue;
+    double t_i = initialTime;
     
-    typedef double (ForwardEulerSolver::*FunctionPointer)(double y, double t);
+    typedef double (ForwardEulerSolver::*FunctionPointer)(double t, double y);
     FunctionPointer p_function = &ForwardEulerSolver::RightHandSide;
      
-    double y_i;
-    double t_i;
+
 
     for (int i = 0; i < N; i++){
-        y_i = y_prev + stepSize * (this->*p_function)(y_prev, t_prev);
-        t_i = initialTime + i* stepSize;
-        y_prev = y_i;
-        t_prev = t_i;
+        y_i  += stepSize * (this->*p_function)(t_i, y_i); //update y
+        t_i = initialTime + i* stepSize; //update y
+     
         
     }
 
-    return y_prev;
+    return y_i;
    
    
 
