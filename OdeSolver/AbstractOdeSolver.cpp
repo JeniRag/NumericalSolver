@@ -2,7 +2,7 @@
 #include "AbstractOdeSolver.hpp"
 
 
-void AbstractOdeSolver:: SetStepSize(double h){
+void AbstractOdeSolver::SetStepSize(double h){
     stepSize = h;
 }
 

@@ -13,8 +13,8 @@ class AbstractOdeSolver
         void SetStepSize(double h);
         void SetTimeInterval(double t0, double t1);
         void SetInitialValue(double y0);
-        virtual double RightHandSide(double y, double t) = 0 ;
-        virtual double SolveEquation() = 0 ;
+        virtual double RightHandSide(double y, double t) = 0 ; // pure virtual functions
+        virtual double SolveEquation() = 0 ; // pure virtual functions
 
 };
 
