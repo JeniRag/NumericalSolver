@@ -14,3 +14,4 @@ void AbstractOdeSolver::SetTimeInterval(double t0, double t1){
 void AbstractOdeSolver::SetInitialValue(double y0){
     initialValue = y0;
 }
+
