@@ -2,25 +2,40 @@
 #include <iostream>
 #include <cassert>
 #include "Matrix.hpp"
-
+#include "Vector.hpp"
+using namespace std;
 
 // Overridden copy constructor
 // Allocates memory for new vector, and copies
 // entries of other vector into it
-Matrix::Matrix(const Matrix& otherMatrix)
+
+// ostream& operator<<(ostream& os, const Matrix& M1)
+// {
+//    os<<"[";
+//    for (int i=1; i<M1.GetNumberOfRows()+1; i++){
+//       for (int j=1; j<M1.GetNumberOfColumns()+1; j++){
+//          os<<M1(i,j) << " ";
+//       }
+//       os<<endl;
+//    }
+//    os<<"]"<<endl;
+
+//    return os;
+// }
+
+Matrix::Matrix(const Matrix &otherMatrix)
 {
    mNumRows = otherMatrix.mNumRows;
    mNumCols = otherMatrix.mNumCols;
-   mData = new double* [mNumRows];
-   for (int i=0; i<mNumRows; i++)
+   mData = new double *[mNumRows];
+   for (int i = 0; i < mNumRows; i++)
    {
-        mData[i] = new double [mNumCols];
-        for (int j=0; j<mNumCols; j++)
-        {
+      mData[i] = new double[mNumCols];
+      for (int j = 0; j < mNumCols; j++)
+      {
 
-            mData[i][j]= otherMatrix.mData[i][j];
-        }
-      
+         mData[i][j] = otherMatrix.mData[i][j];
+      }
    }
 }
 
@@ -30,28 +45,28 @@ Matrix::Matrix(const Matrix& otherMatrix)
 Matrix::Matrix(int NumRows, int NumCols)
 {
    assert(NumRows > 0);
-   assert(NumCols >0);
+   assert(NumCols > 0);
 
    mNumRows = NumRows;
    mNumCols = NumCols;
-   mData = new double* [mNumRows];
-   for (int i=0; i<mNumRows; i++)
+   mData = new double *[mNumRows];
+   for (int i = 0; i < mNumRows; i++)
    {
-    mData[i] = new double [mNumCols];
-    for (int j = 0; j<mNumCols; j++)
-    {
-    mData[i][j] = 0.0;
-    }
-     
+      mData[i] = new double[mNumCols];
+      for (int j = 0; j < mNumCols; j++)
+      {
+         mData[i][j] = 0.0;
+      }
    }
 }
 
 // Overridden destructor to correctly free memory
 Matrix::~Matrix()
 {
-    for (int i =0; i<mNumRows; i++){
-        delete[] mData[i];
-    }
+   for (int i = 0; i < mNumRows; i++)
+   {
+      delete[] mData[i];
+   }
 
    delete[] mData;
 }
@@ -62,112 +77,118 @@ int Matrix::GetNumberOfRows() const
    return mNumRows;
 }
 
-int Matrix::GetNumberOfColumns() const{
-    return mNumCols;
+int Matrix::GetNumberOfColumns() const
+{
+   return mNumCols;
+}
+
+double Matrix::Read(int i, int j) const
+{
+   assert(i > 0);
+   assert(i < mNumRows + 1);
+   assert(j > 0);
+   assert(j < mNumCols + 1);
+   return mData[i - 1][j - 1];
 }
 
 // 1-based indexing
-double& Matrix::operator()(int i, int j)
+double &Matrix::operator()(int i, int j)
 {
    assert(i > 0);
-   assert(i < mNumRows +1);
+   assert(i < mNumRows + 1);
 
-   assert(j>0);
-   assert(j<mNumCols+1);
-   return mData[i-1][j-1];
+   assert(j > 0);
+   assert(j < mNumCols + 1);
+   return mData[i - 1][j - 1];
 }
 
-//Assignment operator
-Matrix& Matrix::operator=(const Matrix& otherMatrix)
+// Assignment operator
+Matrix &Matrix::operator=(const Matrix &otherMatrix)
 {
    assert(mNumRows == otherMatrix.mNumRows);
    assert(mNumCols == otherMatrix.mNumCols);
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-   
-    for (int j = 0; j<mNumCols; j++)
-    {
-    mData[i][j] = otherMatrix.mData[i][j];
-    }     
+
+      for (int j = 0; j < mNumCols; j++)
+      {
+         mData[i][j] = otherMatrix.mData[i][j];
+      }
    }
 
    return *this;
 }
 
-//unary + operator
+// unary + operator
 Matrix Matrix::operator+() const
 {
- 
-   Matrix A(mNumRows, mNumCols);
-    //mData = new double* [mNumRows];
 
-   for (int i=0; i<mNumRows; i++)
+   Matrix A(mNumRows, mNumCols);
+   // mData = new double* [mNumRows];
+
+   for (int i = 0; i < mNumRows; i++)
    {
-    //mData[i] = new double [mNumCols];
-    for (int j = 0; j<mNumCols; j++)
-    {
-    A(i+1, j+1) = mData[i][j];
-    }
-     
+      // mData[i] = new double [mNumCols];
+      for (int j = 0; j < mNumCols; j++)
+      {
+         A(i + 1, j + 1) = mData[i][j];
+      }
    }
-  
+
    return A;
 }
-   // Overloading the unary - operator
+// Overloading the unary - operator
 Matrix Matrix::operator-() const
 {
    Matrix A(mNumRows, mNumCols);
-    //mData = new double* [mNumRows];
+   // mData = new double* [mNumRows];
 
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-    //mData[i] = new double [mNumCols];
-    for (int j = 0; j<mNumCols; j++)
-    {
-    A(i+1, j+1) = -mData[i][j];
-    }
-     
+      // mData[i] = new double [mNumCols];
+      for (int j = 0; j < mNumCols; j++)
+      {
+         A(i + 1, j + 1) = -mData[i][j];
+      }
    }
-  
+
    return A;
 }
 
 // Overloading the binary + operator
-Matrix Matrix::operator+(const Matrix& B) const
+Matrix Matrix::operator+(const Matrix &B) const
 {
    assert(mNumRows == B.mNumRows);
    assert(mNumCols == B.mNumCols);
-    Matrix C(mNumRows, mNumCols);
+   Matrix C(mNumRows, mNumCols);
 
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-        for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j < mNumCols; j++)
 
-        {
+      {
 
-            C(i+1, j+1) = mData[i][j] + B.mData[i][j];
-        }
-      
+         C(i + 1, j + 1) = mData[i][j] + B.mData[i][j];
+      }
    }
    return C;
 }
 
 // Overloading the binary - operator
-Matrix Matrix::operator-(const Matrix& B) const
+Matrix Matrix::operator-(const Matrix &B) const
 {
    assert(mNumRows == B.mNumRows);
    assert(mNumCols == B.mNumCols);
-    Matrix C(mNumRows, mNumCols);
+   Matrix C(mNumRows, mNumCols);
 
-   for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-        for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j < mNumCols; j++)
 
-        {
+      {
 
-            C(i+1, j+1) = mData[i][j] - B.mData[i][j];
-        }
-      
+         C(i + 1, j + 1) = mData[i][j] - B.mData[i][j];
+      }
    }
    return C;
 }
@@ -176,23 +197,131 @@ Matrix Matrix::operator-(const Matrix& B) const
 Matrix Matrix::operator*(double a) const
 {
    Matrix C(mNumRows, mNumCols);
-    for (int i=0; i<mNumRows; i++)
+   for (int i = 0; i < mNumRows; i++)
    {
-        for (int j=0; j<mNumCols; j++)
+      for (int j = 0; j < mNumCols; j++)
 
-        {
+      {
 
-            C(i+1, j+1) = mData[i][j]*a;
-        }
-      
+         C(i + 1, j + 1) = mData[i][j] * a;
+      }
    }
    return C;
 }
 
-// double Matrix::CallculateDeterminant(){
-//         return 0;
+Matrix Matrix::operator*(const Matrix &B) const
+{
 
-// }
+   assert(mNumCols == B.mNumRows);
+
+   Matrix C(mNumRows, B.mNumCols);
+
+   for (int i = 0; i < mNumRows; i++)
+   {
+
+      for (int j = 0; j < B.mNumCols; j++)
+      {
+
+         double value = 0.0;
+
+         for (int k = 0; k < mNumCols; k++)
+         {
+            value += mData[i][k] * B.mData[k][j];
+         }
+
+         C(i + 1, j + 1) = value;
+      }
+   }
+   cout << C << endl;
+   return C;
+}
+
+Vector Matrix::operator*(const Vector &b) const
+{
+
+   assert(mNumCols == b.GetSize());
+   Vector c(mNumRows);
+
+   for (int i = 0; i < mNumRows; i++)
+   {
+
+      double value = 0.0;
+
+      for (int k = 0; k < mNumCols; k++)
+      {
+         value += mData[i][k] * b.Read(k+1);
+      }
+
+      c(i+1) = value;
+   }
+
+   return c;
+}
+
+double Matrix::CalculateDeterminant()
+{
+
+   assert(mNumCols == mNumRows); // check if it is square matrix
+
+   // initialize a value
+   double determinant = 0.0;
+
+   if (mNumCols == 1)
+   {
+      // determinant = mData[0][0];
+      determinant = mData[0][0];
+   }
+
+   else
+   {
+
+      int N = mNumCols;
+      // cout << "N = " << N << endl;
+      int i = 0;
+
+      // for (int i = 0; i < 1; i++)
+      // {
+
+      for (int j = 0; j < N; j++)
+      {
+         // cout << i << " and " << j << " removed" << endl;
+         Matrix subA(N - 1, N - 1); // square matrix of size N-1
+         int r = 0;                 // initiate index to populate new matrix
+         // populate matrix
+         for (int ki = 0; ki < N; ki++)
+         { // iteration over new matrix size
+            // cout<<"r: "<<r<<endl;
+            int c = 0;
+            if (ki != i) // omit the i-th row
+            {
+               int test = 0;
+               for (int kj = 0; kj < N; kj++)
+               {
+
+                  if (kj != j)
+                  { // omit the j-th column
+
+                     // cout << "(" << r << ", " << c << ") populated with "
+                     //      << "( " << ki << ", " << kj << ")" << endl;
+                     // cout<<"r: "<<r<<endl;
+                     assert(r < N - 1);
+                     assert(c < N - 1);
+                     subA.mData[r][c] = mData[ki][kj];
+                     c++; // populate next column
+                  }
+               }
+               r++;
+            }
+         }
+         // cout << "Determinant of: " <<subA  <<"is "<<subA.CalculateDeterminant()<< endl;
+         determinant += pow(-1, j) * subA.CalculateDeterminant() * mData[i][j];
+         // cout<< "adding: "<< pow(-1, j) <<"*" <<subA.CalculateDeterminant()<<"*" <<mData[i][j]<<endl;
+      }
+      //}
+   }
+
+   return determinant;
+}
 
 /*
 
