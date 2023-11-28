@@ -209,7 +209,8 @@ Matrix Matrix::operator*(double a) const
    return C;
 }
 
-Matrix Matrix::operator*(const Matrix &B) const
+// Multiplication of two Matrices
+Matrix Matrix::operator*(const Matrix& B) const
 {
 
    assert(mNumCols == B.mNumRows);
@@ -232,29 +233,47 @@ Matrix Matrix::operator*(const Matrix &B) const
          C(i + 1, j + 1) = value;
       }
    }
-   cout << C << endl;
+   //cout << C << endl;
    return C;
 }
 
-Vector Matrix::operator*(const Vector &b) const
+// Multiplication of Matrix with Vector
+Vector operator*(const Matrix& A, const Vector& b)
 {
+   int vector_size = b.GetSize();
+   assert(A.GetNumberOfColumns() == vector_size);
+   Vector c(A.GetNumberOfRows());
 
-   assert(mNumCols == b.GetSize());
-   Vector c(mNumRows);
-
-   for (int i = 0; i < mNumRows; i++)
+   for (int i = 0; i < A.GetNumberOfRows(); i++)
    {
 
       double value = 0.0;
 
-      for (int k = 0; k < mNumCols; k++)
+      for (int k = 0; k < A.GetNumberOfColumns(); k++)
       {
-         value += mData[i][k] * b.Read(k+1);
+         value += A.mData[i][k] * b.Read(k);
       }
 
-      c(i+1) = value;
+      c(i + 1) = value;
    }
 
+   return c;
+}
+
+// Vector multiplied by Matrix
+Vector operator*(const Vector& b, const Matrix& A)
+{
+   assert(b.GetSize() == A.GetNumberOfRows());
+
+   Vector c(A.GetNumberOfColumns());
+
+   for (int i = 0; i < b.GetSize(); i++)
+   {
+      for (int k = 0; k < A.GetNumberOfColumns(); k++)
+      {
+         c(k + 1) += b.Read(i) * A.mData[i][k];
+      }
+   }
    return c;
 }
 

@@ -34,10 +34,17 @@ public:
     Matrix operator-(const Matrix &M1) const;
     Matrix operator*(double a) const;
     Matrix operator*(const Matrix &M1) const;
-    Vector operator*(const Vector &b) const;
+    
     double CalculateDeterminant();
     friend ostream &operator<<(ostream &os, const Matrix &M1); // overwrite print operator for Matrix class
+
+    friend Vector operator*(const Matrix& A, const Vector& b); //friend so that you can still access A.mData and other private members
+    friend Vector operator*(const Vector& b, const Matrix& A);
 };
+
+//Prototype signatures for friend operators
+Vector operator*(const Matrix& A, const Vector& b);
+Vector operator*(const Vector& b, const Matrix& A);
 
 // Prototype signature of length() friend function
 // int length(const Vector& v);
