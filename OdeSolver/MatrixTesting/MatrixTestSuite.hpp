@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cxxtest/TestSuite.h>
 #include "../Matrix.hpp"
+#include "../Vector.hpp"
 
 ostream &operator<<(ostream &os, const Matrix &M1)
 {
@@ -287,11 +288,70 @@ public:
             }
         }
 
-        delete A;
-        delete B;
-        delete C;
-        delete C_expected;
+       
     }
+
+    void TestMatrixVectorMultiplicate(void){
+        Vector b(2);
+        b(1) = 1;
+        b(2) = 2;
+        
+        Matrix A(3,2);
+        A(1,1) = 1;
+        A(2,1) =3;
+        A(3,1) =5;
+
+        A(1,2) = 2;
+        A(2,2) = 4;
+        A(3,2) =6; 
+
+        Vector c = A*b;
+        
+
+        Vector c_expected(3);
+        c_expected(1) = 5;
+        c_expected(2) =11;
+        c_expected(3) =17;
+
+       TS_ASSERT_EQUALS(c.GetSize(), A.GetNumberOfRows());
+        for (int i=0; i<c.GetSize(); i++){
+             TS_ASSERT_DELTA(c.Read(i), c_expected.Read(i), 1e-6);
+        }
+
+        
+    }
+
+
+
+    void TestVectorMatrixMultiplicate(void){
+        Vector b(2);
+        b(1) = 1;
+        b(2) = 2;
+        
+        Matrix A(2,3);
+        A(1,1) = 1;
+        A(1,2) =3;
+        A(1,3) =5;
+
+        A(2,1) = 2;
+        A(2,2) = 4;
+        A(2,3) =6; 
+
+        Vector c = b*A;
+        
+
+        Vector c_expected(3);
+        c_expected(1) = 5;
+        c_expected(2) =11;
+        c_expected(3) =17;
+
+       // TS_ASSERT_EQUALS(c.GetSize(), A.GetNumberOfRows());
+        for (int i=0; i<c.GetSize(); i++){
+             TS_ASSERT_DELTA(c.Read(i), c_expected.Read(i), 1e-6);
+        }
+
+
+   }
 
 
 };
